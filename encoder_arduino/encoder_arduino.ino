@@ -16,7 +16,6 @@ Encoder myEnc(1,0);
 
 void setup() {
   Serial.begin(250000);
-  Serial.println("Basic Encoder Test:");
   pinMode(LED,OUTPUT);
 }
 
