@@ -13,11 +13,13 @@ import csv
 
 port = 'COM13'
 max_num_values = 600
-ser = serial.Serial(port, 250000, timeout=1)
-start_value = int(ser.readline().decode("utf-8"))
+ser = serial.Serial(port, 250000, timeout=.05)
 
 # initialize output csvfile
 output_csv = None
+
+# boolean to check if values should be written to .csv
+write2csv = False
 
 positions = []
 positions_diff = [0]
@@ -47,17 +49,22 @@ def update_plot():
         curve_diff.setData(filtered_diff)
 
 def update():
+    write2csv = True
     line = ser.readline().decode("utf-8")
-    #print('{}:   {}'.format(datetime.strftime(datetime.now(),'%H:%M:%S'),line))
-    new_value = int(line)-start_value
-    positions.append(new_value)
-    if output_csv:
-        with open(output_csv, 'a') as csvfile:
-            filewrite = csv.writer(csvfile, delimiter=',', quoting=csv.QUOTE_MINIMAL)
-            filewrite.writerow([new_value])
+    if not line:
+        write2csv = False
 
-    if len(positions) > 1:
-        positions_diff.append(positions[-1]-positions[-2])
+    #print('{}:   {}'.format(datetime.strftime(datetime.now(),'%H:%M:%S'),line))
+    if write2csv:
+        new_value = int(line)
+        positions.append(new_value)
+        if output_csv:
+            with open(output_csv, 'a') as csvfile:
+                filewrite = csv.writer(csvfile, delimiter=',', quoting=csv.QUOTE_MINIMAL)
+                filewrite.writerow([datetime.now(),new_value])
+
+        if len(positions) > 1:
+            positions_diff.append(positions[-1]-positions[-2])
     # Call the update!
     update_plot()
 
@@ -66,11 +73,8 @@ timer = pg.QtCore.QTimer()
 timer.timeout.connect(update)
 timer.start(15)
 
-
 if __name__ == '__main__':
     print('Rotary encoder to .csv')
-
-
     options = {}
     options['defaultextension'] = '.csv'
     options['initialdir'] = 'C:/DATA_TEMP/wheel'
