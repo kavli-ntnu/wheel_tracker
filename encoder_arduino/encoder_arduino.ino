@@ -1,13 +1,13 @@
-/*
+/* 
  Rotary encoder code
 
- Sends values "newPosition" over serial.
-
+ Sends values "newPosition" over serial. 
+ 
  */
 #include <Encoder.h>
 elapsedMillis interval_timer; // for regular intervals
 elapsedMillis measure_timer; // measure frameclock
-unsigned int interval_ = 20; // time in ms between serial events
+unsigned int interval_ = 25; // time in ms between serial events 
 
 int frameclock_pin = 3;
 int sync_pin = 4;
@@ -35,17 +35,16 @@ void loop() {
         start_clock = false;
       }
       measure_timer = 0;
-   }
-
+   } 
+  
   if (measurement == true){
     if (interval_timer >= interval_){
       interval_timer = interval_timer-interval_;
-      digitalWrite(sync_pin, HIGH);
+      digitalWrite(sync_pin, HIGH); 
       Serial.println(newPosition);
       delay(5);
-      digitalWrite(sync_pin, LOW);
-
-      }
+      digitalWrite(sync_pin, LOW); 
+      }  
     }
 
   if(measure_timer > 1000){
