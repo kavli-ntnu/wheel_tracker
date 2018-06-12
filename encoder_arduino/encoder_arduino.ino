@@ -1,37 +1,55 @@
-/* 
+/*
  Rotary encoder code
- */
 
+ Sends values "newPosition" over serial.
+
+ */
 #include <Encoder.h>
-elapsedMillis timer1;
-int interval = 20; // minimum time in ms between serial events 
-int frame_clock = 3; // Frame clock pin from 2P setup 
-int NI_out = 4; // National Instruments hardware out
-int status_scope;
+elapsedMillis interval_timer; // for regular intervals
+elapsedMillis measure_timer; // measure frameclock
+unsigned int interval_ = 20; // time in ms between serial events
+
+int frameclock_pin = 3;
+int sync_pin = 4;
+
+bool measurement = false;
+bool start_clock = true;
+int sync_state = LOW;
+int status_measure;
 
 Encoder myEnc(1,0);
 
 void setup() {
   Serial.begin(250000);
-  pinMode(frame_clock,INPUT_PULLDOWN);
-  pinMode(NI_out,OUTPUT);
-  digitalWrite(NI_out,LOW);
-
+  pinMode(frameclock_pin, INPUT);
+  pinMode(sync_pin, OUTPUT);
 }
 
-long oldPosition  = -999;
-
 void loop() {
-  long newPosition = myEnc.read();
-  status_scope = digitalReadFast(frame_clock);
-  if (timer1 >= interval) {
-      timer1 = timer1 - interval;
-      if (status_scope == 1) {
-        digitalWriteFast(NI_out,HIGH);
-        Serial.println(newPosition);
-        delay(2);
-        digitalWriteFast(NI_out,LOW);
-        delay(2);
-       }
+   long newPosition = myEnc.read();
+   status_measure = digitalReadFast(frameclock_pin);
+   if (status_measure == HIGH){
+      measurement = true;
+      if (start_clock == true){
+        interval_timer = interval_;
+        start_clock = false;
+      }
+      measure_timer = 0;
+   }
+
+  if (measurement == true){
+    if (interval_timer >= interval_){
+      interval_timer = interval_timer-interval_;
+      digitalWrite(sync_pin, HIGH);
+      Serial.println(newPosition);
+      delay(5);
+      digitalWrite(sync_pin, LOW);
+
+      }
     }
+
+  if(measure_timer > 1000){
+    measurement = false;
+    start_clock = true;
+  }
 }
