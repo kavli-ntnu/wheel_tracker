@@ -11,7 +11,7 @@ from tkinter import filedialog
 import csv
 
 
-port = 'COM13'
+port = 'COM12'
 max_num_values = 600
 ser = serial.Serial(port, 250000, timeout=.05)
 

@@ -1,27 +1,33 @@
 ## Read write encoder
-import sys,os
+# conda execute
+# env:
+#  - python >=3
+#  - pyserial
+
+
+import sys, os
+from shutil import copyfile
+
+import configparser
 from datetime import datetime,timezone,timedelta
 import serial
 import csv
-from tkinter import filedialog
 
-port = 'COM9'
+port = 'COM14'
 max_num_values = 600
 baudrate = 250000
 
-# initialize output csvfile
-output_csv = None
-
+temp_csv = os.getcwd().replace('\\','/') + '/temp/temp.csv'
+try:
+    os.remove(temp_csv)
+except OSError:
+    pass
 
 if __name__ == '__main__':
     print('Rotary encoder to .csv')
     ser = serial.Serial(port, baudrate, timeout=.5)
-
-    now = datetime.now().strftime("%H-%M-%S_%m-%d-%Y")
-    root_folder = 'C:/DATA/WHEEL/'
-    output_csv = ''.join([root_folder,now,'.csv'])
-    print(output_csv)
-    wheel_log = open(output_csv,'a')
+    print(temp_csv)
+    wheel_log = open(temp_csv,'a')
 
     while True:
         try:
@@ -37,3 +43,12 @@ if __name__ == '__main__':
             print('End of measurement.')
             wheel_log.close()
             break
+
+    # Copy the .csv file to correct filepath
+    # Open export_params.cfg and retrieve csv filepath
+    config = configparser.ConfigParser()
+    config.read('export_params.cfg')
+    output_csv = config['SETTINGS']['export_path']
+    sys.stdout.write('Copying file to {} '.format(output_csv))
+    copyfile(temp_csv, output_csv)
+    sys.stdout.write('Success.')
