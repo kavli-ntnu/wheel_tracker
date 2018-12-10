@@ -18,6 +18,7 @@ bool measurement = false;
 bool start_clock = true;
 int sync_state = LOW;
 int status_measure;
+int status_beambreak;
 
 Encoder myEnc(1,0);
 
