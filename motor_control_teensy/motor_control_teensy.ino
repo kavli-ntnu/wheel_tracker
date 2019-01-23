@@ -26,6 +26,10 @@ bool interrupt_saved = true;
 int status_measure;
 
 long interruptedPosition;
+long newPosition;
+
+int button_state;
+int interrupter_state;
 
 Encoder myEnc(0,1);
 
@@ -44,11 +48,11 @@ void setup() {
 }
 
 void loop() {
-  long newPosition = myEnc.read();
+  newPosition = myEnc.read();
   
-  status_measure = digitalReadFast(frameclock_pin);
-  int button_state = digitalReadFast(button_pin);
-  int interrupter_state = digitalReadFast(interrupter_pin);
+  status_measure        = digitalRead(frameclock_pin);
+  button_state          = digitalReadFast(button_pin);
+  interrupter_state     = digitalReadFast(interrupter_pin);
 
   // MOTOR ACTION
   if(button_state == HIGH){  
@@ -56,12 +60,12 @@ void loop() {
      interval_timer_motor = 0;
   } 
   if ((interval_timer_motor <= interval_motor_) && (motor_enable == true)){
-    digitalWrite(led, HIGH); 
-    digitalWrite(motor_enable_pin, HIGH); 
+    digitalWriteFast(led, HIGH); 
+    digitalWriteFast(motor_enable_pin, HIGH); 
     } else {
     motor_enable = false;
-    digitalWrite(led, LOW); 
-    digitalWrite(motor_enable_pin, LOW);       
+    digitalWriteFast(led, LOW); 
+    digitalWriteFast(motor_enable_pin, LOW);       
   }
 
   // CHECK INTERRUPT
@@ -86,10 +90,10 @@ void loop() {
   if (measurement == true){
     if (interval_timer >= interval_){
       interval_timer = interval_timer-interval_;
-      digitalWrite(sync_pin, HIGH);
+      digitalWriteFast(sync_pin, HIGH);
       // Check if beam was interrupted in between
       if (interrupted == true){
-        digitalWrite(sync_interrupter_pin, HIGH);
+        digitalWriteFast(sync_interrupter_pin, HIGH);
       }
 
       // Serial print: Position_Interruped_InterruptedPosition_Motor
@@ -114,12 +118,12 @@ void loop() {
       
       interrupt_saved = true;      
       interrupted = false;
-      digitalWrite(sync_pin, LOW);
-      digitalWrite(sync_interrupter_pin, LOW);
+      digitalWriteFast(sync_pin, LOW);
+      digitalWriteFast(sync_interrupter_pin, LOW);
       }
     }
 
-  if(measure_timer > 100){
+  if(measure_timer > 500){
     measurement = false;
     start_clock = true;
   }
