@@ -5,7 +5,7 @@ import serial
 import csv
 from tkinter import filedialog
 
-port = 'COM9'
+port = 'COM6'
 max_num_values = 600
 baudrate = 250000
 
@@ -22,16 +22,22 @@ if __name__ == '__main__':
     output_csv = ''.join([root_folder,now,'.csv'])
     print(output_csv)
     wheel_log = open(output_csv,'a')
+    wheel_log.write('Rotary encoder and motor control\n')
+    wheel_log.write('Femtonics setup\n')
+    wheel_log.write('Samping rate: 50 sps\n')
+    wheel_log.write('{}\n'.format(now))
+    wheel_log.write('timestamp,position,interrupt,position_at_interrupt,motor_enable\n')
 
     while True:
         try:
             serial_line = ser.readline()
             if serial_line:
-                wheel_pos = serial_line.decode('utf-8').strip()
+                wheel_info = serial_line.decode('utf-8').strip()
+                wheel_info_format = wheel_info.split('_')
                 now = datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f')
-                print('{} | {}'.format(now.split('.')[0], wheel_pos))
-                entry_log = ','.join([now, wheel_pos + '\n'])
-                wheel_log.write(entry_log)
+                print('{} | Pos: {:5d} | Interrupt: {} | Motor: {}'.format(now.split('.')[0], int(wheel_info_format[0]), (wheel_info_format[1]), wheel_info_format[3]))
+
+                wheel_log.write('{},{},{},{},{}\n'.format(now,wheel_info_format[0],wheel_info_format[1],wheel_info_format[2],wheel_info_format[3]))
 
         except KeyboardInterrupt:
             print('End of measurement.')
