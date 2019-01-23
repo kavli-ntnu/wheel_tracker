@@ -29,7 +29,7 @@ if __name__ == '__main__':
             if serial_line:
                 wheel_pos = serial_line.decode('utf-8').strip()
                 now = datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f')
-                print('{} | {}'.format(now.split('.')[0],wheel_pos))
+                print('{} | {}'.format(now.split('.')[0], wheel_pos))
                 entry_log = ','.join([now, wheel_pos + '\n'])
                 wheel_log.write(entry_log)
 
