@@ -5,7 +5,7 @@ import serial
 import csv
 from tkinter import filedialog
 
-port = 'COM6'
+port = 'COM10'
 max_num_values = 600
 baudrate = 250000
 

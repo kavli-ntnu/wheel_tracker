@@ -23,7 +23,6 @@ bool start_clock = true;
 bool motor_enable = false;
 bool interrupted = false;
 bool interrupt_saved = true;
-int status_measure;
 
 long interruptedPosition;
 long newPosition;
@@ -40,9 +39,9 @@ void setup() {
  pinMode(sync_interrupter_pin, OUTPUT);
  
  pinMode(button_pin, INPUT);
- pinMode(interrupter_pin, INPUT);
- pinMode(frameclock_pin, INPUT);
-
+ pinMode(interrupter_pin, INPUT); // has pulldown attached
+ pinMode(frameclock_pin, INPUT_PULLDOWN); 
+ attachInterrupt(frameclock_pin, clock_detected, RISING);
 
  Serial.begin(250000);
 }
@@ -50,7 +49,6 @@ void setup() {
 void loop() {
   newPosition = myEnc.read();
   
-  status_measure        = digitalRead(frameclock_pin);
   button_state          = digitalReadFast(button_pin);
   interrupter_state     = digitalReadFast(interrupter_pin);
 
@@ -78,23 +76,20 @@ void loop() {
   } 
 
   // ROTARY ENCODER
-  if (status_measure == HIGH){
-      measurement = true;
-      if (start_clock == true){
-        interval_timer = interval_;
-        start_clock = false;
-      }
-      measure_timer = 0;
-   } 
- 
   if (measurement == true){
+    
+    if (start_clock == true){ // set back timer once
+      interval_timer = interval_; 
+      start_clock = false;
+    }
+    
     if (interval_timer >= interval_){
       interval_timer = interval_timer-interval_;
       digitalWriteFast(sync_pin, HIGH);
       // Check if beam was interrupted in between
-      if (interrupted == true){
-        digitalWriteFast(sync_interrupter_pin, HIGH);
-      }
+      //if (interrupted == true){
+      //  digitalWriteFast(sync_interrupter_pin, HIGH);
+      //}
 
       // Serial print: Position_Interruped_InterruptedPosition_Motor
       Serial.print(newPosition);
@@ -119,7 +114,7 @@ void loop() {
       interrupt_saved = true;      
       interrupted = false;
       digitalWriteFast(sync_pin, LOW);
-      digitalWriteFast(sync_interrupter_pin, LOW);
+      //digitalWriteFast(sync_interrupter_pin, LOW);
       }
     }
 
@@ -128,3 +123,11 @@ void loop() {
     start_clock = true;
   }
 }
+
+void clock_detected()
+{
+  measurement = true;
+  measure_timer = 0;
+}
+
+
