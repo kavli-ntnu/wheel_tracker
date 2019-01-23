@@ -119,7 +119,7 @@ void loop() {
       }
     }
 
-  if(measure_timer > 1000){
+  if(measure_timer > 100){
     measurement = false;
     start_clock = true;
   }
