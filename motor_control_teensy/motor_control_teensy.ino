@@ -16,7 +16,7 @@ elapsedMillis interval_timer; // for regular intervals
 unsigned int interval_ = 20;  // time in ms between serial events 
 
 elapsedMillis interval_timer_motor;  // for regular intervals
-unsigned int interval_motor_ = 1000; // Keep pin on motor controler high for this long
+unsigned int interval_motor_ = 2000; // Keep pin on motor controler high for this long (roughly the time the motor is turning)
 
 bool measurement = false;
 bool start_clock = true;
@@ -41,7 +41,8 @@ void setup() {
  pinMode(button_pin, INPUT);
  pinMode(interrupter_pin, INPUT); // has pulldown attached
  pinMode(frameclock_pin, INPUT_PULLDOWN); 
- attachInterrupt(frameclock_pin, clock_detected, RISING);
+ attachInterrupt(frameclock_pin, clock_detected, RISING); // Microscope frame clock
+ attachInterrupt(interrupter_pin, interrupt_detected, RISING); // Beam interrupter
 
  Serial.begin(250000);
 }
@@ -49,10 +50,8 @@ void setup() {
 void loop() {
   newPosition = myEnc.read();
   
-  button_state          = digitalReadFast(button_pin);
-  interrupter_state     = digitalReadFast(interrupter_pin);
-
   // MOTOR ACTION
+  button_state = digitalReadFast(button_pin);
   if(button_state == HIGH){  
      motor_enable = true;
      interval_timer_motor = 0;
@@ -65,19 +64,10 @@ void loop() {
     digitalWriteFast(led, LOW); 
     digitalWriteFast(motor_enable_pin, LOW);       
   }
-
-  // CHECK INTERRUPT
-  if(interrupter_state == HIGH){  
-    interrupted = true;
-    if(interrupt_saved == true){
-      interruptedPosition = newPosition; // save current position at interrupt
-      interrupt_saved = false; // make sure only first occurence is saved
-    }
-  } 
-
+  
   // ROTARY ENCODER
   if (measurement == true){
-    
+   
     if (start_clock == true){ // set back timer once
       interval_timer = interval_; 
       start_clock = false;
@@ -86,11 +76,7 @@ void loop() {
     if (interval_timer >= interval_){
       interval_timer = interval_timer-interval_;
       digitalWriteFast(sync_pin, HIGH);
-      // Check if beam was interrupted in between
-      //if (interrupted == true){
-      //  digitalWriteFast(sync_interrupter_pin, HIGH);
-      //}
-
+     
       // Serial print: Position_Interruped_InterruptedPosition_Motor
       Serial.print(newPosition);
       Serial.print("_");
@@ -98,6 +84,8 @@ void loop() {
         Serial.print("1_");
         Serial.print(interruptedPosition);
         Serial.print("_");
+        interrupt_saved = true;      
+        interrupted = false;
       } else {
         Serial.print("0_");
         Serial.print(interruptedPosition);
@@ -111,10 +99,7 @@ void loop() {
       
       delay(5);
       
-      interrupt_saved = true;      
-      interrupted = false;
       digitalWriteFast(sync_pin, LOW);
-      //digitalWriteFast(sync_interrupter_pin, LOW);
       }
     }
 
@@ -129,5 +114,16 @@ void clock_detected()
   measurement = true;
   measure_timer = 0;
 }
+
+void interrupt_detected()
+{
+  interrupted = true;
+  if(interrupt_saved == true){
+      interruptedPosition = myEnc.read(); // save current position at interrupt
+      interrupt_saved = false;            // make sure only first occurence is saved
+  }
+}
+
+
 
 
