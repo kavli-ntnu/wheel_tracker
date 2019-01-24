@@ -6,14 +6,14 @@ Documentation for behavioral wheel used for head fixed in vivo recordings. It en
 
 - One way clutch: HF0612 KULELAGER AS, Molde, NO (post@kulelager24.no)
 - Bearing: HK 0608 KULELAGER AS, Molde, NO 
-- Shaft coupler 6 mm inner diameter (similar to [this][shaft coupler])
+- Shaft coupler 6 mm inner diameter (similar to [this][shaft coupler]) to couple rotary encoder shaft and main axle of wheel
 - GT2 timing belt [pulley][pulley] (this one has to be enlarged to fit bearings)
 - GT2 timing [belt][belt]
 
-#### Main assembly
+### Main assembly
 The wheel is made from black foam and has a radius of 85mm and a width of 70mm. Larger diameters can be chosen if needed. 
 - Customized aluminium parts: [STEP][step files] files | [Drawings][drawings]
-- Thorlabs posts (minimum height for radius 85 mm) - RS2.5P/M - Ø25.0 mm Pedestal Pillar Post, M6 Taps, L = 65 mm
+- Thorlabs posts like RS2.5P/M - Ø25.0 mm Pedestal Pillar Post, M6 Taps, L = 65 mm (this is the minimum height for wheel radius 85 mm)
 - Thorlabs breadboard (e.g. MB3030/M)
 
 ### Rotary encoder and photo interrupter (microcontroller 1)
@@ -43,7 +43,7 @@ For behavioral recording this setup is paired with a fast camera that tracks the
 [logo]: wheel_cad.jpg
 [shaft coupler]: https://www.geartech.no/produkter/transmission/akselkoblinger/fast-kobling/
 [pulley]: https://www.adafruit.com/product/1254
-[belt]: https://www.adafruit.com/product/1254
+[belt]: https://www.adafruit.com/product/1184
 
 [step files]: /step_files_wheel
 [drawings]: drawings_wheel.pdf
@@ -61,7 +61,7 @@ For behavioral recording this setup is paired with a fast camera that tracks the
 [documentation ustepper]: http://ustepper.com/docs/html/index.html
 [pdf ustepper]: /ustepper_control_code/product_sheet_revB.pdf
 
-[python code wheel]: /wheel_tracker/save_tracking.py
+[python code wheel]: save_tracking.py
 
 [basler camera]: https://www.baslerweb.com/en/products/cameras/area-scan-cameras/ace/aca2000-165umnir/
 [lens]: https://vst.co.jp/en/vs-h1-series/
