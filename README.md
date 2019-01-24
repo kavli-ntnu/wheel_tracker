@@ -4,17 +4,16 @@ Documentation for behavioral wheel used for head fixed in vivo recordings. It en
 
 ![alt text][logo]
 
-- One way clutch: HF0612 KULELAGER AS, Molde, NO (post@kulelager24.no)
-- Bearing: HK 0608 KULELAGER AS, Molde, NO 
-- Shaft coupler 6 mm inner diameter (similar to [this][shaft coupler]) to couple rotary encoder shaft and main axle of wheel
-- GT2 timing belt [pulley][pulley] (this one has to be enlarged to fit bearings)
-- GT2 timing [belt][belt]
-
 ### Main assembly
 The wheel is made from black foam and has a radius of 85mm and a width of 70mm. Larger diameters can be chosen if needed. 
 - Customized aluminium parts: [STEP][step files] files | [Drawings][drawings]
 - Thorlabs posts like RS2.5P/M - Ø25.0 mm Pedestal Pillar Post, M6 Taps, L = 65 mm (this is the minimum height for wheel radius 85 mm)
 - Thorlabs breadboard (e.g. MB3030/M)
+- One way clutch: HF0612 KULELAGER AS, Molde, NO (post@kulelager24.no)
+- Bearing: HK 0608 KULELAGER AS, Molde, NO 
+- Shaft coupler 6 mm inner diameter (similar to [this][shaft coupler]) to couple rotary encoder shaft and main axle of wheel
+- GT2 timing belt [pulley][pulley] (this one has to be enlarged to fit bearings)
+- GT2 timing [belt][belt]
 
 ### Rotary encoder and photo interrupter (microcontroller 1)
 A YUMO Rotary Encoder (model E6B2-CWZ3E, see [datasheet](mouser_datasheet_YUMO.pdf)) connected to a [teensy 3.5][Teensy homepage] is used to digitize the wheel motion. A t-slot [photo interruper][t-slot] is used to record 360 degree turns. 
