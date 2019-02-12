@@ -39,7 +39,7 @@ void setup() {
  pinMode(sync_interrupter_pin, OUTPUT);
  
  pinMode(button_pin, INPUT);
- pinMode(interrupter_pin, INPUT); // has pulldown attached
+ pinMode(interrupter_pin, INPUT); // has pullup attached
  pinMode(frameclock_pin, INPUT_PULLDOWN); 
  attachInterrupt(frameclock_pin, clock_detected, RISING); // Microscope frame clock
  attachInterrupt(interrupter_pin, interrupt_detected, RISING); // Beam interrupter

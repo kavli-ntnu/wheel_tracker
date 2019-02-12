@@ -31,7 +31,7 @@ void setup() {
  pinMode(led, OUTPUT);
  pinMode(sync_pin, OUTPUT);
  
- pinMode(interrupter_pin, INPUT_PULLUP); 
+ pinMode(interrupter_pin, INPUT_PULLUP); // either this or attach external pullup
  pinMode(frameclock_pin, INPUT_PULLDOWN); 
  attachInterrupt(frameclock_pin, clock_detected, RISING); // Microscope frame clock
  attachInterrupt(interrupter_pin, interrupt_detected, RISING); // Beam interrupter
