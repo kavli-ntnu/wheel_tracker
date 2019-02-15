@@ -36,7 +36,7 @@ void setup() {
  attachInterrupt(frameclock_pin, clock_detected, RISING); // Microscope frame clock
  attachInterrupt(interrupter_pin, interrupt_detected, RISING); // Beam interrupter
 
- Serial.begin(250000);
+ Serial.begin(230400);
 }
 
 void loop() {

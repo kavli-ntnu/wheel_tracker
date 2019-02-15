@@ -6,9 +6,9 @@ import serial
 import csv
 import configparser
 
-port = 'COM7'
+port = 'COM8'
 max_num_values = 600
-baudrate = 250000
+baudrate = 230400
 
 # initialize output csvfile
 output_csv = None
@@ -17,6 +17,8 @@ output_csv = None
 if __name__ == '__main__':
     print('Rotary encoder to .csv')
     ser = serial.Serial(port, baudrate, timeout=.5)
+    ser.reset_input_buffer()
+    ser.reset_output_buffer()
 
     now = datetime.now().strftime("%H-%M-%S_%m-%d-%Y")
     root_folder = 'C:/DATA_TEMP/WHEEL/'
@@ -42,6 +44,8 @@ if __name__ == '__main__':
 
         except KeyboardInterrupt:
             print('End of measurement.')
+            ser.close()
+            print('Serial connection closed.')
             wheel_log.close()
             break
 
