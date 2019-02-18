@@ -44,12 +44,11 @@ void loop() {
 
   // ROTARY ENCODER
   if (measurement == true){
-   
     if (start_clock == true){ // set back timer once
       interval_timer = interval_; 
       start_clock = false;
     }
-    
+    digitalWriteFast(led, HIGH);
     if (interval_timer >= interval_){
       interval_timer = interval_timer-interval_;
       digitalWriteFast(sync_pin, HIGH);
@@ -80,6 +79,7 @@ void loop() {
   if(measure_timer > 500){
     measurement = false;
     start_clock = true;
+    digitalWriteFast(led, LOW);
   }
 }
 
