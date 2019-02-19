@@ -6,7 +6,7 @@ import serial
 import csv
 import configparser
 
-port = 'COM8'
+port = 'COM11'
 max_num_values = 600
 baudrate = 230400
 
