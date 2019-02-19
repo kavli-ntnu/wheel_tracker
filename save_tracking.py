@@ -7,8 +7,7 @@ import csv
 import configparser
 
 port = 'COM11'
-max_num_values = 600
-baudrate = 230400
+baudrate = 500000
 
 # initialize output csvfile
 output_csv = None
