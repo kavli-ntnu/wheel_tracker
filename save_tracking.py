@@ -6,7 +6,7 @@ import serial
 import csv
 import configparser
 
-port = 'COM11'
+port = 'COM10'
 baudrate = 500000
 
 # initialize output csvfile
@@ -20,12 +20,12 @@ if __name__ == '__main__':
     ser.reset_output_buffer()
 
     now = datetime.now().strftime("%H-%M-%S_%m-%d-%Y")
-    root_folder = 'C:/DATA_TEMP/WHEEL/'
+    root_folder = 'C:/DATA/WHEEL/'
     output_csv = ''.join([root_folder,now,'.csv'])
     print(output_csv)
     wheel_log = open(output_csv,'a')
     wheel_log.write('Rotary encoder and motor control\n')
-    wheel_log.write('Miniscope setup\n')
+    wheel_log.write('Femtonics setup\n')
     wheel_log.write('Samping rate: 50 sps\n')
     wheel_log.write('{}\n'.format(now))
     wheel_log.write('timestamp,position,interrupt,position_at_interrupt,motor_enable\n')
@@ -62,6 +62,6 @@ if __name__ == '__main__':
             os.remove(output_csv)
         except OSError:
             pass
-    except AttributeError as err:
+    except KeyError as err:
         print(err)
         print('No valid configuration found! Skipping copy step.')

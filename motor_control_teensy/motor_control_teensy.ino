@@ -44,7 +44,7 @@ void setup() {
  attachInterrupt(frameclock_pin, clock_detected, RISING); // Microscope frame clock
  attachInterrupt(interrupter_pin, interrupt_detected, RISING); // Beam interrupter
 
- Serial.begin(250000);
+ Serial.begin(500000);
 }
 
 void loop() {
@@ -72,6 +72,7 @@ void loop() {
       interval_timer = interval_; 
       start_clock = false;
     }
+    digitalWriteFast(led, HIGH);
     
     if (interval_timer >= interval_){
       interval_timer = interval_timer-interval_;
@@ -106,6 +107,7 @@ void loop() {
   if(measure_timer > 500){
     measurement = false;
     start_clock = true;
+    digitalWriteFast(led, LOW);
   }
 }
 
