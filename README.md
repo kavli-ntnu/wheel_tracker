@@ -1,6 +1,6 @@
 # Wheel tracker
 
-Documentation for behavioral wheel used for head fixed in vivo recordings. It enables precise recordings of wheel movement and enforced motion via a stepper motor. The motor is coupled to the main axle via a one-way clutch. This way the animal can always outrun the (slower) motor movement, but is blocked from running backwards. Two microcontrollers are used, one for recording the wheel motion, one as stepper motor driver. 
+Documentation for behavioral wheel used for head fixed in vivo recordings. It enables precise recordings of wheel movement and enforced motion via a stepper motor. The motor is coupled to the main axle via a one-way clutch. This way the animal can always outrun the (slower) motor movement, but is blocked from running backwards. Two microcontrollers are used, one for recording the wheel motion, one as stepper motor driver. This wheel is currently in use at both the femtonics as well as the miniscope setup. 
 
 ![alt text][logo]
 
@@ -22,6 +22,8 @@ A YUMO Rotary Encoder (model E6B2-CWZ3E, see [datasheet](mouser_datasheet_YUMO.p
 
 Recording starts upon rising edge detection on `frameclock_pin` and stops when there was no signal on this pin for > 500 ms (adjustable, see code). This event and the detection of a beam break (photo interrupter) are detected as hardware interrupts on the teensy and sent over to the recording computer via USB serial (see section *Recorder* below) in 20 ms intervals (`interval_`). Before and after data is sent via serial the `sync pin` is switched, which can be used to record when communication happened (the delay between measurement of wheel position and initiation of data transfer is assumed to be negligible). This sync pin is connected to an event recorder (femtonics digital in or else). 
 The teensy also registers user button presses (`button_pin`) and sends out a HIGH on `motor_enable_pin` to microcontroller 2 (see below) over a certain interval (`interval_motor_`). During this time a *1* will be sent over for entry *Motor* (see serial data below).
+
+There is also arduino code for just the rotary encoder ([code][only rotary code] teensy3.5) in isolation (no motor + button interaction). 
 
 ### Motor (microcontroller 2)
 For motor control a NEMA17 stepper motor is used, controlled by [uStepper][ustepper homepage] board, running a acceleration/deceleration protocol over defined number of steps. The stepper motor driver gets triggered by the Teensy 3.5 when a button is pressed. 
@@ -52,6 +54,8 @@ For behavioral recording this setup is paired with a fast camera that tracks the
 [t-slot]: https://www.adafruit.com/product/3985
 
 [encoder library]: https://www.pjrc.com/teensy/td_libs_Encoder.html
+[only rotary code]: /only_rotary_teensy/only_rotary_teensy.ino
+
 
 [teensy code]: /motor_control_teensy/motor_control_teensy.ino
 

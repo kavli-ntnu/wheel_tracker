@@ -3,7 +3,7 @@
 // elongate pulse and send out again 
 
 const int frameclock_inpin  = 0;
-const int frameclock_outpin = 13;
+const int frameclock_outpin = 14;
 
 void setup() {
  pinMode(frameclock_outpin, OUTPUT);
