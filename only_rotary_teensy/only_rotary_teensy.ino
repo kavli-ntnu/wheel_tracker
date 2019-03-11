@@ -48,7 +48,7 @@ void loop() {
       interval_timer = interval_; 
       start_clock = false;
     }
-    digitalWriteFast(led, HIGH);
+    digitalWriteFast(led, LOW);
     if (interval_timer >= interval_){
       interval_timer = interval_timer-interval_;
       digitalWriteFast(sync_pin, HIGH);
