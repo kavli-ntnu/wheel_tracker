@@ -27,6 +27,7 @@ bool measurement = false;
 bool start_clock = true;
 bool interrupted = false;
 bool interrupt_saved = true;
+bool led_state = LOW;
 
 long interruptedPosition;
 long newPosition;
@@ -68,11 +69,12 @@ void loop() {
       interval_timer = interval_; 
       start_clock = false;
     }
-    digitalWriteFast(led, LOW);
+    
     if (interval_timer >= interval_){
       interval_timer -= interval_;
       digitalWriteFast(sync_pin, HIGH);
-     
+      led_state = !led_state;
+      digitalWriteFast(led, led_state);
       // Serial print: Position_Interruped_InterruptedPosition_Motor
       Serial.print(newPosition);
       Serial.print("_");
@@ -97,6 +99,7 @@ void loop() {
     } else {
       digitalWriteFast(button_led, LOW);
       start_clock = true;
+      digitalWriteFast(led, LOW);
     }
 
 
