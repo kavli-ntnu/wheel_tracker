@@ -19,7 +19,6 @@ const int button_pin = 16;
 const int sync_pin = 15;
 Bounce push_button = Bounce(button_pin, 250);  // 250 ms debounce
 
-elapsedMillis measure_timer; // measure button
 elapsedMillis interval_timer; // for regular intervals
 unsigned int interval_ = 20;  // time in ms between serial events 
 
@@ -56,7 +55,6 @@ void loop() {
   if (push_button.update()) {
     if (push_button.fallingEdge()) {
         measurement = !measurement;
-        measure_timer = 0;
     }
   }
 
