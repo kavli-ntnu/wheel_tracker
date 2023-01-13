@@ -23,8 +23,6 @@ bool led_state = LOW;
 long interruptedPosition;
 long newPosition;
 
-int interrupter_state;
-
 Encoder myEnc(0,1);
 
 void setup() {
