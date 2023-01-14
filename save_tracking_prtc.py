@@ -38,7 +38,7 @@ if __name__ == '__main__':
     wheel_log.write('Neuropixel setup\n')
     wheel_log.write('Samping rate: 50 sps\n')
     wheel_log.write('{}\n'.format(now))
-    wheel_log.write('timestamp_sys, timestamp, position, interrupt, position_at_interrupt\n')
+    wheel_log.write('timestamp_sys,timestamp,position,interrupt,position_at_interrupt\n')
     
     # Open sync csv and take care of header
     sync_log = open(output_sync_csv,'a')
@@ -46,7 +46,7 @@ if __name__ == '__main__':
     sync_log.write('Neuropixel setup\n')
     sync_log.write('Samping rate: 50 sps\n')
     sync_log.write('{}\n'.format(now))
-    sync_log.write('timestamp_sys, timestamp\n')
+    sync_log.write('timestamp_sys,timestamp\n')
 
     while True:
         try:
