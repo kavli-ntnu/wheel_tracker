@@ -6,10 +6,12 @@ import serial
 import csv
 import configparser
 
-port = 'COM11'
-baudrate = 500000
+port = 'COM5'   # NOTE! This will change between computers, and may change when a computer is restarted
+baudrate = 9600
 
 # initialize output csvfile
+root_folder = 'C:/temp/wheel/'
+os.makedirs(root_folder, exist_ok=True)
 output_csv = None
 
 

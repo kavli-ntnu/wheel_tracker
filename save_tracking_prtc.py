@@ -3,17 +3,19 @@
 # on Teensy 3.5
 # In addition to saving position / interrupt data, it also saves timestamps whenever a sync pulse is detected
 # It writes two files 
-# - Postiion data csv
+# - Position data csv
 # - _sync Sync data csv
 
 
 import datetime
 import serial
+import os
 
-port = 'COM11'
-baudrate = 500000
+port = 'COM5'   # NOTE! This will change between computers, and may change when a computer is restarted
+baudrate = 9600
 
 # initialize output csvfiles
+root_folder = 'C:/temp/wheel/'  
 output_pos_csv  = None
 output_sync_csv = None
 
@@ -23,9 +25,8 @@ if __name__ == '__main__':
     ser.reset_input_buffer()
     ser.reset_output_buffer()
 
-    now = datetime.datetime.now().strftime("%H-%M-%S_%m-%d-%Y")
+    now = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     
-    root_folder = 'C:/DATA_TEMP/WHEEL/'
     output_pos_csv  = ''.join([root_folder,now,'.csv'])
     output_sync_csv = ''.join([root_folder,now,'_sync.csv'])
     
@@ -33,6 +34,7 @@ if __name__ == '__main__':
     print(f'OUTPUT SYNC DATA:     {output_sync_csv}')
 
     # Open position csv and take care of header
+    os.makedirs(root_folder, exist_ok=True)
     wheel_log = open(output_pos_csv,'a')
     wheel_log.write('Rotary encoder POSITION DATA\n')
     wheel_log.write('Neuropixel setup\n')
