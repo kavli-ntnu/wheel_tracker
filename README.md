@@ -25,6 +25,11 @@ The teensy also registers user button presses (`button_pin`) and sends out a HIG
 
 There is also arduino code for just the rotary encoder ([code][only rotary code] teensy3.5) in isolation (no motor + button interaction). 
 
+Several versions of ´only_rotary_teensy*´ are provided for various synchronisation setups:
+* only_rotary_teensy_btn : replacing the measurement input signal from an external recorder, a button attached to the arduino is used to start/stop recording manually
+* only_rotary_teensy_dtr : recording happens while an active serial connection is maintained, i.e. begins automatically whenever the listening Python script is started
+* only_rotary_teensy_prtc : the frame clock output pin is replaced by a pseudo-random timecode input. Whenever an input TTL is receieved, an additional output signal is sent over usb-serial declaring the timestamp (ms accuracy) at which the ttl was recieved. Can be used for post-processing alignment to the standard sync method in use for Neuropixels in the Moser group.
+
 ### Motor (microcontroller 2)
 For motor control a NEMA17 stepper motor is used, controlled by [uStepper][ustepper homepage] board, running a acceleration/deceleration protocol over defined number of steps. The stepper motor driver gets triggered by the Teensy 3.5 when a button is pressed. 
 - Arduino [code][ustepper code] uStepper
